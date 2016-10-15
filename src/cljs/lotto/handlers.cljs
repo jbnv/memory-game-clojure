@@ -24,11 +24,11 @@
 
 (re-frame/reg-event-db
   :deal-cards
-  (fn [db [_ card-names width height]]
+  (fn [db [_ card-names]]
     (assoc
       db
-      :cards (deal-cards card-names width height)
-      :current-player :A
+      :cards (deal-cards card-names (get db :width) (get db :height))
+      :current-player (get db :current-player)
     )
   )
 )
