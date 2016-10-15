@@ -48,7 +48,7 @@
 
 (defn on-click-deal-new-game []
   (re-frame/dispatch [:deal-cards
-    [:a :b :c :d :e :f :g :h :i :j]
+    (keys cards/mahjong)
     (width)
     (height)
   ])
