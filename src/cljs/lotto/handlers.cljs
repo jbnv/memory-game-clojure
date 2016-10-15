@@ -15,8 +15,8 @@
       card-count (* width height)
       taken-card-names (take (/ card-count 2) (shuffle card-names))
       name-deck (shuffle (concat taken-card-names taken-card-names))
-      deck (for [name name-deck] (cards/card name :back))
-      grid-of-cards (for [row (partition width deck)] (vec row))
+      deck (for [name name-deck] (cards/card name :front))
+      grid-of-cards (vec (for [row (partition width deck)] (vec row)))
     ]
     grid-of-cards
   )
