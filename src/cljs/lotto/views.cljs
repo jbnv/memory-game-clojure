@@ -18,28 +18,44 @@
 )
 
 (defn oriented-card [card]
-  [(if (cards/front? card) :div.flip-container :div.flip-container.back-of-card)
-    [:div.flipper [card-back] [card-face card]]
+  [
+    (if
+      (cards/front? card)
+      :div.flip-container
+      :div.flip-container.back-of-card
+    )
+    [:div.flipper
+      [card-back]
+      [card-face card]
+    ]
   ]
 )
 
-(defn height [] 4)
-(defn width [] 5)
+(defn height [] (re-frame/subscribe [:height]))
+(defn width [] (re-frame/subscribe [:width]))
+
+(defn flipper [row column]
+  (let
+    [
+      card (re-frame/subscribe [:card-at row column])
+    ]
+    [:div 
+      {
+        :on-click (fn [] (re-frame/dispatch [:flip-up row column]))
+      }
+      [oriented-card @card]
+    ]
+  )
+)
 
 (defn grid []
   (let
     [
-      card (fn [is-front]
-        [oriented-card (cards/card :white-dragon (if is-front :front :back))]
-      )
-      xor (fn [x y]
-        (= (mod (+ x y) 2) 1)
-      )
     ]
     [:table [:tbody
-      (for [y (range (height))]
-        [:tr (for [x (range (width))]
-          [:td (card (xor x y))]
+      (for [y (range @(height))]
+        [:tr (for [x (range @(width))]
+          [:td [flipper x y]]
         )]
       )
     ]]
@@ -49,8 +65,6 @@
 (defn on-click-deal-new-game []
   (re-frame/dispatch [:deal-cards
     (keys cards/mahjong)
-    (width)
-    (height)
   ])
 )
 
