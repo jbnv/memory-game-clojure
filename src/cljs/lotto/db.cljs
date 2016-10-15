@@ -1,4 +1,9 @@
 (ns lotto.db)
 
 (def default-db
-  {:current-player :A})
+  {
+    :height 4
+    :width 5
+    :current-player :A
+  }
+)
